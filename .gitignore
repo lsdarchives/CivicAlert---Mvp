@@ -1,0 +1,93 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+**/application.properties
+**/application-local.properties
+**/application-secret.properties
+
+# Java build output and crash logs
+target/
+hs_err_pid*.log
+
+# Node / Expo generated files
+node_modules/
+.expo/
+dist/
+web-build/
+coverage/
+
+# Local editor settings
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+**/application.properties
+**/application-local.properties
+**/application-secret.properties
+
+# Java build output and crash logs
+target/
+hs_err_pid*.log
+
+# Node / Expo generated files
+node_modules/
+.expo/
+dist/
+web-build/
+coverage/
+
+# Local editor settings
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local Claude settings
+**/.claude/settings.json
+
+# Temporary source backups
+**/*.backup.tsx
