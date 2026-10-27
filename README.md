@@ -1,158 +1,193 @@
-# CivicAlert
+# CivicAlert — Full-Stack Civic Issue Reporting System
 
-CivicAlert is a full-stack civic reporting application with a Spring Boot backend, a web-based administration interface, and a resident-facing mobile application. The project brings these application components together in one repository.
+## 1. Project Overview
 
-> **Project status:** This README documents the current repository structure and the technologies visible in the checked-in configuration. Confirm each feature and setup step in a running local environment before using this project for a formal demonstration.
+CivicAlert is a full-stack civic issue-reporting MVP designed to connect residents who report community problems with administrators who manage and review those reports.
 
-## Repository structure
+The repository contains three main application components:
+
+1. **Spring Boot backend** — handles API requests, authentication, application logic, and database access.
+2. **React web administration interface** — provides an interface for administrators to sign in and manage community reports.
+3. **Expo/React Native resident mobile application** — provides resident-facing login, community reporting, and report-tracking screens.
+
+The application is intended to support reporting issues such as potholes, damaged streetlights, waste collection problems, water leaks, and other local service concerns.
+
+**Important status distinction:** This repository contains implementation code for the features documented below. The existence of source code does not prove that every workflow has passed end-to-end testing. Any presentation or report must distinguish implemented code, verified behaviour, known defects, and proposed improvements.
+
+**GitHub repository:** https://github.com/lsdarchives/CivicAlert---Mvp  
+**Branch used for the initial upload:** `master`
+
+---
+
+## 2. Problem Statement
+
+Residents may encounter local infrastructure or service-delivery problems but lack a convenient way to submit a report, keep track of it, or see issues reported by other members of their community.
+
+Administrators also need a central interface for reviewing submitted reports and updating their progress.
+
+CivicAlert aims to provide a digital reporting workflow through a resident mobile interface, an administration dashboard, a central backend, and a relational database.
+
+### Project objectives
+
+- Provide a resident-facing interface for account access and civic issue reporting.
+- Capture report details, including title, description, category, and optional location information.
+- Generate a reference number for each report.
+- Allow residents to view their own reports and their statuses.
+- Provide a community report feed.
+- Give administrators a web interface for viewing and managing reports.
+- Introduce account authentication and role-aware access.
+- Store users, reports, comments, and reactions in a relational data model.
+- Support account profile updates, password changes, and account deactivation.
+- Maintain a version-controlled codebase that can be reviewed and extended.
+
+These objectives describe the purpose of the project; do not present them as proof that every requirement has been fully tested.
+
+---
+
+## 3. Repository Structure
+
+The repository root is the Spring Boot Maven project.
 
 ```text
-.
-├── src/                       # Spring Boot backend source and tests
-├── pom.xml                    # Maven build configuration
-├── mvnw / mvnw.cmd            # Maven Wrapper
-├── civicalert-frontend/       # React + Vite web administration interface
-└── civicalert-mobile/         # Expo + React Native mobile application
+CivicAlert---Mvp/
+├── src/
+│   ├── main/
+│   │   ├── java/com/example/spcrud/
+│   │   │   ├── config/
+│   │   │   ├── controller/
+│   │   │   ├── dto/
+│   │   │   ├── entity/
+│   │   │   ├── repository/
+│   │   │   ├── security/
+│   │   │   └── service/
+│   │   └── resources/
+│   └── test/
+│       └── java/com/example/spcrud/
+├── civicalert-frontend/
+│   ├── src/
+│   ├── package.json
+│   └── Vite configuration
+├── civicalert-mobile/
+│   ├── src/
+│   │   ├── app/
+│   │   ├── components/
+│   │   └── services/
+│   └── package.json
+├── pom.xml
+├── mvnw
+├── mvnw.cmd
+├── .gitignore
+└── README.md
 ```
 
-## Technology stack
+### Backend package responsibilities
 
-| Component | Technologies |
-|---|---|
-| Backend | Java, Spring Boot, Spring MVC, Spring Data JPA, Spring Security |
-| Authentication/security | Spring Security OAuth2 Resource Server support and JWT-related service code |
-| Database | MySQL with the MySQL Connector/J driver |
-| Server-rendered views | Thymeleaf dependency is included in the backend |
-| Admin web interface | React, React Router, Vite |
-| Resident mobile app | React Native, Expo, Expo Router, TypeScript |
-| Version control | Git and GitHub |
+- `config/` — JWT and Spring Security configuration.
+- `controller/` — HTTP endpoints for authentication, reports, accounts, and community interactions.
+- `dto/` — request and response objects.
+- `entity/` — JPA entities representing persisted data.
+- `repository/` — database access interfaces.
+- `security/` — security-related filters, including enabled-account enforcement.
+- `service/` — business logic for users, authentication, JWT handling, reports, and account lifecycle operations.
 
-The backend build configuration currently declares Spring Boot **4.1.2** and Java **25**. Check the compiler configuration in `pom.xml` and the Java version installed on your machine if the build reports a version mismatch.
+The web and mobile applications have separate package manifests and development commands. They are separate clients of the backend rather than a single frontend application.
 
-## Application areas
+---
+
+## 4. Technology Stack
 
 ### Backend
-The Spring Boot application is located under `src/main/java/com/example/spcrud`. The repository includes controller, DTO, entity, security, and service packages. Service classes include authentication/JWT-related logic, report-related logic, and account deactivation/deletion logic.
 
-### Administration web interface
-The React/Vite application is in `civicalert-frontend/`. Its package scripts include development, production build, lint, and preview commands.
+- Java
+- Spring Boot
+- Spring MVC and REST controllers
+- Spring Data JPA
+- Jakarta Persistence
+- Spring Security
+- OAuth2 Resource Server support
+- JWT-related services and configuration
+- MySQL Connector/J
+- Maven and Maven Wrapper
+- Thymeleaf dependency
 
-### Resident mobile application
-The Expo/React Native application is in `civicalert-mobile/`. Its routes include home, explore, and reports-related screens. The dependency list includes location, maps, image picker, secure storage, and asynchronous storage packages; the presence of a dependency alone does not guarantee that a feature is fully configured or tested.
+The current `pom.xml` declares Spring Boot `4.1.2` and Java `25`. It also configures the Maven compiler plugin with source and target `16`. This version mismatch should be reviewed and resolved before documenting the final supported Java version.
 
-## Prerequisites
+Thymeleaf is listed as a dependency, but its presence alone does not prove that the current user interfaces use server-rendered Thymeleaf pages.
 
-Install the tools appropriate to the parts you want to run:
+### Administration frontend
 
-- A JDK compatible with the backend's Maven/compiler configuration.
-- MySQL Server.
-- Node.js and npm.
-- Git.
-- Android Studio/emulator or a compatible device for Android testing; Expo tooling can also be used for other supported targets.
+- React
+- React DOM
+- React Router
+- Vite
+- JavaScript and JSX
+- CSS
+- ESLint
 
-## Configuration and secrets
+The frontend package includes scripts for development, production builds, linting, and previewing a production build.
 
-The application's local Spring configuration is intentionally not committed. Before starting the backend:
+### Resident mobile frontend
 
-1. Create or configure your local `src/main/resources/application.properties` file.
-2. Configure your local MySQL database and database credentials.
-3. Configure any authentication/JWT secrets required by the backend.
-4. Never commit real passwords, tokens, database credentials, or production secrets.
+- React Native
+- Expo
+- Expo Router
+- TypeScript
+- Expo SecureStore
+- AsyncStorage dependency
+- Expo Location dependency
+- React Native Maps dependency
+- Expo Image Picker dependency
 
-Use placeholder values in shared documentation and keep real secrets in local-only configuration or a suitable secret manager. The exact configuration keys should be checked against the backend code and your local configuration.
+The presence of location, maps, and image-picker packages should not be described as a fully completed feature without verifying the relevant implementation and testing it.
 
-## Running locally
+### Database
 
-Run commands from the repository root unless a different directory is specified.
+- MySQL
+- JPA entity mapping
+- Spring Data repository interfaces
 
-### 1. Start the backend
+### Version control
 
-Ensure MySQL is running and the local Spring configuration is complete. Then run:
+- Git
+- GitHub
 
-**Windows PowerShell**
-```powershell
-.\mvnw.cmd spring-boot:run
-```
+---
 
-**macOS/Linux**
-```bash
-./mvnw spring-boot:run
-```
+## 5. System Architecture
 
-If startup fails, review the terminal output for Java version, database connection, schema, or missing configuration errors.
+CivicAlert follows a client-server architecture with a shared backend.
 
-### 2. Start the admin web interface
-
-Open a second terminal:
-
-```powershell
-cd civicalert-frontend
-npm install
-npm run dev
-```
-
-Vite prints the local development URL in the terminal. Confirm the backend API URL and any frontend environment configuration match your local setup before testing sign-in or API-driven pages.
-
-Useful scripts:
-```bash
-npm run build
-npm run lint
-npm run preview
-```
-
-### 3. Start the resident mobile app
-
-Open another terminal:
-
-```powershell
-cd civicalert-mobile
-npm install
-npx expo start
-```
-
-Use the Expo CLI options shown in the terminal to open the app in a supported emulator or device. Check the app's API base URL and device network access: a phone cannot normally reach a backend using the computer's `localhost` address.
-
-## Testing and verification
-
-The backend contains a test source tree under `src/test/java`. The Maven test command is:
-
-```powershell
-.\mvnw.cmd test
-```
-
-The web frontend includes a lint script and a production build script. The mobile project includes an Expo lint script. Run these checks locally and record their actual results before claiming that the project passes tests.
-
-Suggested verification checklist:
-
-- [ ] Backend starts with the intended local database.
-- [ ] Authentication works for the intended account types.
-- [ ] Report-related workflows work from the resident app.
-- [ ] Administrative workflows work in the web interface.
-- [ ] Backend authorization is enforced for protected operations.
-- [ ] Web production build completes successfully.
-- [ ] Mobile app launches on the target device/emulator.
-- [ ] No secrets or local-only configuration are committed.
-
-## Version control
-
-The source is hosted on GitHub:
-
-https://github.com/lsdarchives/CivicAlert---Mvp
-
-The default development branch currently used for the initial upload is `master`.
-
-## Known documentation gaps
-
-This README is a starting point. Before a release or formal assessment, update it with verified details from the application:
-
-- A concise problem statement and intended users.
-- Confirmed feature descriptions and screenshots.
-- Database schema/ER diagram.
-- API routes and request/response examples.
-- Exact local configuration keys and frontend API URL setup (without secrets).
-- Verified test/build results.
-- Deployment instructions, if deployment is implemented.
-
-## Security note
-
-Do not publish local configuration files, JWT signing secrets, passwords, private keys, crash dumps, build output, or dependency folders. Review `.gitignore` and the repository's tracked files before making the repository public.
+```text
+┌─────────────────────────┐
+│ Resident Mobile App     │
+│ Expo + React Native     │
+└────────────┬────────────┘
+             │
+             │ HTTP / JSON
+             │ Bearer JWT
+             ▼
+┌─────────────────────────┐
+│ Spring Boot Backend     │
+│                         │
+│ REST Controllers        │
+│ Security / JWT          │
+│ Services                │
+│ DTOs                    │
+│ Repositories            │
+└────────────┬────────────┘
+             │
+             │ JPA
+             ▼
+┌─────────────────────────┐
+│ MySQL Database          │
+│ Users                   │
+│ Reports                 │
+│ Comments / Reactions    │
+└─────────────────────────┘
+             ▲
+             │ HTTP / JSON
+             │ Bearer JWT
+┌────────────┴────────────┐
+│ Administration Web UI   │
+│ React + Vite            │
+└─────────────────────────┘
